@@ -5,6 +5,7 @@ import os
 import unittest
 
 import shell
+import subprocess
 
 
 class TestShellStyle(unittest.TestCase):
@@ -25,6 +26,14 @@ class TestShellStyle(unittest.TestCase):
         self.assertEqual(re, 'hello shell.py\n')
         re = shell.ex('echo 你好 shell.py').stdout()
         self.assertEqual(re, '你好 shell.py\n')
+
+    def test_single_run_stderr(self):
+        bad_path = 'wtf#noneexist#dir#yay'
+        expected_stderr = subprocess.Popen(
+                ['ls', bad_path], stderr=subprocess.PIPE).communicate()[1]
+        task = shell.ex('ls {0}'.format(bad_path))
+        self.assertEqual(task.re(), 2)
+        self.assertEquals(task.stderr(), expected_stderr)
 
     def test_simple_pipe(self):
         pipeline = shell.p('echo yes no').p("awk '{print $1}'")
@@ -77,6 +86,11 @@ class TestShellStyle(unittest.TestCase):
                 'cut -d: -f 2'])
         self.assertEqual(pipeline.stdout(), '192.168.116.101\n')
         self.assertEqual(pipeline.re(), 0)
+
+    def test_expand_tilde(self):
+        task = shell.ex('echo ~')
+        self.assertEqual(task.re(), 0)
+        self.assertEqual(task.stdout(), os.path.expanduser('~')+'\n')
 
 
 if __name__ == "__main__":
