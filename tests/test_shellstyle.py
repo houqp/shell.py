@@ -16,50 +16,67 @@ class TestShellStyle(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_single_run(self):
+    def test_single_run_retcode(self):
+        self.assertEquals(shell.p('echo hello shell.py').re(), 0)
+        self.assertEquals(shell.p('ls wtf#noneexist#dir#yay').re(), 2)
+
+    def test_single_run_stdout(self):
         re = shell.p('echo hello shell.py').stdout()
         self.assertEqual(re, 'hello shell.py\n')
+        re = shell.ex('echo 你好 shell.py').stdout()
+        self.assertEqual(re, '你好 shell.py\n')
 
     def test_simple_pipe(self):
-        re = shell.p('echo yes no').p("awk '{print $1}'").stdout()
-        self.assertEqual(re, 'yes\n')
+        pipeline = shell.p('echo yes no').p("awk '{print $1}'")
+        self.assertEqual(pipeline.stdout(), 'yes\n')
+        self.assertEqual(pipeline.re(), 0)
+
+    def test_simple_pipe_run(self):
+        pipeline = shell.p('echo yes no').p("awk '{print $1}'")
+        pipeline.run()
+        self.assertEqual(pipeline.stdout(), 'yes\n')
+        self.assertEqual(pipeline.re(), 0)
 
     def test_inputstream(self):
         in_str = open(self.ifconfig_out_path).read()
-        re = shell.inputstream(in_str).p('grep eth0').stdout()
-        self.assertEqual(re, 'eth0      Link encap:Ethernet  HWaddr 00:30:ac:c9:2e:f4\n')
+        self.assertEqual(
+                shell.inputstream(in_str).p('grep eth0').stdout(),
+                'eth0      Link encap:Ethernet  HWaddr 00:30:ac:c9:2e:f4\n')
 
     def test_chain_of_pipe(self):
-        re = shell.p('cat {0}'.format(self.ifconfig_out_path))\
+        pipeline = shell.p('cat {0}'.format(self.ifconfig_out_path))\
                 .p("grep -A 1 eth0")\
                 .p("grep inet")\
                 .p("awk '{print $2}'")\
-                .p("cut -d: -f 2").stdout()
-        self.assertEqual(re, '192.168.116.101\n')
-        re = (shell
+                .p("cut -d: -f 2")
+        self.assertEqual(pipeline.stdout(), '192.168.116.101\n')
+        self.assertEqual(pipeline.re(), 0)
+        pipeline = (shell
                 .p('cat {0}'.format(self.ifconfig_out_path))
                 .p("grep -A 1 lo")
                 .p("grep inet")
                 .p("awk '{print $2}'")
-                .p("cut -d: -f 2")
-                .stdout())
-        self.assertEqual(re, '127.0.0.1\n')
+                .p("cut -d: -f 2"))
+        self.assertEqual(pipeline.stdout(), '127.0.0.1\n')
+        self.assertEqual(pipeline.re(), 0)
 
-    def test_pipe_all(self):
-        re = shell.pipe_all([
+    def test_pipe_with_cmd_list(self):
+        pipeline = shell.pipe_all([
                 'cat {0}'.format(self.ifconfig_out_path),
                 'grep -A 1 eth0',
                 'grep inet',
                 'awk \'{print $2}\'',
-                'cut -d: -f 2']).stdout()
-        self.assertEqual(re, '192.168.116.101\n')
-        re = shell.p([
+                'cut -d: -f 2'])
+        self.assertEqual(pipeline.stdout(), '192.168.116.101\n')
+        self.assertEqual(pipeline.re(), 0)
+        pipeline = shell.p([
                 'cat {0}'.format(self.ifconfig_out_path),
                 'grep -A 1 eth0',
                 'grep inet',
                 'awk \'{print $2}\'',
-                'cut -d: -f 2']).stdout()
-        self.assertEqual(re, '192.168.116.101\n')
+                'cut -d: -f 2'])
+        self.assertEqual(pipeline.stdout(), '192.168.116.101\n')
+        self.assertEqual(pipeline.re(), 0)
 
 
 if __name__ == "__main__":

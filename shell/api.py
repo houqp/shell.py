@@ -29,4 +29,4 @@ def p(arg):
 
 
 def ex(cmd_str):
-    return RunCmd(cmd_str).go()
+    return RunCmd(cmd_str).run()
