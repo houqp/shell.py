@@ -3,7 +3,7 @@
 import os
 import sys
 
-import shellstyle
+import shell
 
 try:
     from setuptools import setup
@@ -11,22 +11,22 @@ except ImportError:
     from distutils.core import setup
 
 packages = [
-    'shellstyle',
+    'shell',
 ]
 
 requires = []
 
 setup(
-    name='shellstyle',
-    version=shellstyle.__version__,
-    description='Shell the good part for Python.',
+    name='shell',
+    version=shell.__version__,
+    description='Shell power for Python.',
     #long_description=readme + '\n\n' + history,
     author='Qingping Hou',
     author_email='dave2008713@gmail.com',
     #url='http://fooo.org',
     packages=packages,
     #package_data={'': ['LICENSE', 'NOTICE'], 'requests': ['*.pem']},
-    package_dir={'shellstyle': 'shellstyle'},
+    package_dir={'shell': 'shell'},
     include_package_data=True,
     install_requires=requires,
     license='MIT',

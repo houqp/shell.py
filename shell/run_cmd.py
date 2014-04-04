@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+import os
 import shlex
 from subprocess import Popen
 from subprocess import PIPE
@@ -15,7 +16,10 @@ class RunCmd():
             self.input_pipe = None
 
     def get_cmd_lst(self):
-        return shlex.split(self.cmd_str)
+        # handle '~'
+        lst = [os.path.expanduser(c) for c in shlex.split(self.cmd_str)]
+        #@TODO handl env var  03.04 2014 (houqp)
+        return lst
 
     def get_popen(self):
         return Popen(self.get_cmd_lst(), stdin=self.input_pipe, stdout=PIPE)

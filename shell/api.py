@@ -9,7 +9,7 @@ def inputstream(s):
     return InputStream(s)
 
 
-def run(cmd_str):
+def cmd(cmd_str):
     return RunCmd(cmd_str)
 
 
@@ -21,3 +21,12 @@ def pipe_all(cmd_lst):
     return ssr
 
 
+def p(arg):
+    if type(arg) == str:
+        return cmd(arg)
+    elif type(arg) == list:
+        return pipe_all(arg)
+
+
+def ex(cmd_str):
+    return RunCmd(cmd_str).go()
