@@ -8,4 +8,4 @@ __license__ = 'MIT'
 
 from .run_cmd import RunCmd
 from .input_stream import InputStream
-from .api import inputstream, cmd, pipe_all, ex, p
+from .api import inputstream, cmd, pipe_all, ex, p, ex_all

@@ -27,6 +27,13 @@ class TestShellStyle(unittest.TestCase):
         re = shell.ex('echo 你好 shell.py').stdout()
         self.assertEqual(re, '你好 shell.py\n')
 
+    def test_multiple_ex(self):
+        re = shell.ex_all([
+            'echo hello',
+            'echo world'])
+        self.assertEqual(re[0].stdout(), 'hello\n')
+        self.assertEqual(re[1].stdout(), 'world\n')
+
     def test_single_run_stderr(self):
         bad_path = 'wtf#noneexist#dir#yay'
         expected_stderr = subprocess.Popen(

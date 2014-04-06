@@ -30,3 +30,7 @@ def p(arg):
 
 def ex(cmd_str):
     return RunCmd(cmd_str).run()
+
+
+def ex_all(cmd_lst):
+    return [ex(c) for c in cmd_lst]
