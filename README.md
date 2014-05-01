@@ -5,6 +5,12 @@ shell.py
 Bring the good part of Shell scripting to Python.
 
 
+Install
+-------
+```
+pip install shell.py
+```
+
 Usage
 -----
 
