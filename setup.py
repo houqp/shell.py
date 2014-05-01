@@ -14,11 +14,16 @@ packages = [
 
 requires = []
 
+with open('README.rst') as f:
+    readme = f.read()
+with open('HISTORY.rst') as f:
+    history = f.read()
+
 setup(
     name='shell.py',
     version=shell.__version__,
     description='Shell power for Python.',
-    long_description=open('README.rst', 'r').read(),
+    long_description=readme + '\n\n' + history,
     author='Qingping Hou',
     author_email='dave2008713@gmail.com',
     packages=packages,
