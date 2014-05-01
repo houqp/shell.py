@@ -21,9 +21,9 @@ def pipe_all(cmd_lst):
 
 
 def p(arg):
-    if type(arg) == str:
+    if isinstance(arg, str):
         return cmd(arg)
-    elif type(arg) == list:
+    elif isinstance(arg, list):
         return pipe_all(arg)
 
 
