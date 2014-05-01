@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from __future__ import unicode_literals
 import os
 import unittest
 import subprocess
@@ -24,16 +23,6 @@ class TestShellStyle(unittest.TestCase):
     def test_single_run_stdout(self):
         re = shell.p('echo hello shell.py').stdout()
         self.assertEqual(re, b'hello shell.py\n')
-
-        cmd_str = 'echo 你好 shell.py'
-        try:
-            unicode
-        except NameError:
-            pass
-        else:
-            cmd_str = cmd_str.encode('utf-8')
-        re = shell.ex(cmd_str).stdout()
-        self.assertEqual(re, '你好 shell.py\n'.encode('utf-8'))
 
     def test_multiple_ex(self):
         re = shell.ex_all([
