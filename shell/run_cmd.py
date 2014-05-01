@@ -6,6 +6,7 @@ import shlex
 from subprocess import Popen
 from subprocess import PIPE
 
+from .util import str_to_pipe
 
 class RunCmd():
     def __init__(self, cmd_str, input_pipe=None):
@@ -31,9 +32,15 @@ class RunCmd():
         return self.cmd_p
 
     def p(self, cmd):
-        cmd_p = self.get_popen()
+        in_pipe = None
+        if self.std['out']:
+            # command has already been executed, get output as string
+            in_pipe = str_to_pipe(self.std['out'])
+        else:
+            cmd_p = self.get_popen()
+            in_pipe = cmd_p.stdout
         #cmd_p.stdout.close() # allow cmd_p to receive SIGPIPE?
-        return RunCmd(cmd, input_pipe=cmd_p.stdout)
+        return RunCmd(cmd, input_pipe=in_pipe)
 
     def run(self):
         cmd_p = self.get_popen()

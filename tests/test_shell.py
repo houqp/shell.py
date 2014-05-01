@@ -94,6 +94,10 @@ class TestShellStyle(unittest.TestCase):
         self.assertEqual(pipeline.stdout(), '192.168.116.101\n')
         self.assertEqual(pipeline.re(), 0)
 
+    def test_ex_pipe(self):
+        out = shell.ex('echo -e "123\n456\n789"').p('grep 4').stdout()
+        self.assertEqual(out, '456\n')
+
     def test_expand_tilde(self):
         task = shell.ex('echo ~')
         self.assertEqual(task.re(), 0)
