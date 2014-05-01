@@ -1,3 +1,6 @@
+misc:
+	* py3 support
+
 feature:
 	* var expand
 	* parallel execution
