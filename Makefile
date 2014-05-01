@@ -1,6 +1,7 @@
 all: test
 
 test:
+	# need at least nosetests 1.3.0
 	nosetests
 
 
