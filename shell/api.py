@@ -25,6 +25,8 @@ def p(arg):
         return cmd(arg)
     elif isinstance(arg, list):
         return pipe_all(arg)
+    else:
+        raise ValueError('argument must be a string or list')
 
 
 def ex(cmd_str):
