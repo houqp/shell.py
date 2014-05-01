@@ -18,7 +18,7 @@ setup(
     name='shell.py',
     version=shell.__version__,
     description='Shell power for Python.',
-    long_description=open('README.md', 'r').read(),
+    long_description=open('README.rst', 'r').read(),
     author='Qingping Hou',
     author_email='dave2008713@gmail.com',
     packages=packages,

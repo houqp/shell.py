@@ -70,7 +70,7 @@ This is equivalent to:
 .. code-block:: python
 
     >>> from shell import ex
-    >>> ex('echo 1 2 3').p('awk "{print $1}"').stdout()`
+    >>> ex('echo 1 2 3').p('awk "{print $1}"').stdout()
 
 
 See test cases for more examples.
