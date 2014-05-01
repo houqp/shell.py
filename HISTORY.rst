@@ -3,7 +3,7 @@
 Release History
 ---------------
 
-0.0.8 (YYYY-MM-DD)
+0.0.8 (2011-05-01)
 ..................
 
 * support subclass of string and list as argument for p()
