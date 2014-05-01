@@ -1,6 +1,7 @@
 
 shell.py
 ========
+[![Build Status](https://travis-ci.org/houqp/shell.py.svg?branch=master)](https://travis-ci.org/houqp/shell.py)
 
 Bring the good part of Shell scripting to Python.
 
