@@ -6,7 +6,9 @@ import shlex
 from subprocess import Popen
 from subprocess import PIPE
 
+from .compat import basestring
 from .util import str_to_pipe
+
 
 class RunCmd():
     def __init__(self, cmd_str, input_pipe=None):
@@ -21,14 +23,14 @@ class RunCmd():
     def get_cmd_lst(self):
         # handle '~'
         lst = [os.path.expanduser(c) for c in shlex.split(self.cmd_str)]
-        #@TODO handl env var  03.04 2014 (houqp)
+        # @TODO handl env var  03.04 2014 (houqp)
         return lst
 
     def get_popen(self):
         if self.cmd_p is None:
             self.cmd_p = Popen(
-                    self.get_cmd_lst(),
-                    stdin=self.input_pipe, stdout=PIPE, stderr=PIPE)
+                self.get_cmd_lst(),
+                stdin=self.input_pipe, stdout=PIPE, stderr=PIPE)
         return self.cmd_p
 
     def p(self, cmd):
@@ -39,7 +41,7 @@ class RunCmd():
         else:
             cmd_p = self.get_popen()
             in_pipe = cmd_p.stdout
-        #cmd_p.stdout.close() # allow cmd_p to receive SIGPIPE?
+        # cmd_p.stdout.close() # allow cmd_p to receive SIGPIPE?
         return RunCmd(cmd, input_pipe=in_pipe)
 
     def run(self):
@@ -68,4 +70,3 @@ class RunCmd():
         elif isinstance(other, RunCmd):
             return self.p(other.cmd_str)
         raise ValueError('argument must be a string or an instance of RunCmd')
-

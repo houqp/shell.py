@@ -1,7 +1,7 @@
 shell.py
 ========
 
-.. image:: https://badge.fury.io/py/shell.py.svg
+.. image:: https://badge.fury.io/py/shell.py.png
     :target: http://badge.fury.io/py/shell.py
 
 .. image:: https://travis-ci.org/houqp/shell.py.svg?branch=master

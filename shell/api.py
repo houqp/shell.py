@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+from .compat import basestring
 from .run_cmd import RunCmd
 from .input_stream import InputStream
 
@@ -21,7 +22,7 @@ def pipe_all(cmd_lst):
 
 
 def p(arg):
-    if isinstance(arg, str):
+    if isinstance(arg, basestring):
         return cmd(arg)
     elif isinstance(arg, list):
         return pipe_all(arg)
