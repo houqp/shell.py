@@ -28,6 +28,7 @@ setup(
     install_requires=requires,
     license='MIT',
     zip_safe=False,
+    url='https://github.com/houqp/shell.py',
     classifiers=(
         'Intended Audience :: Developers',
         'Natural Language :: English',
