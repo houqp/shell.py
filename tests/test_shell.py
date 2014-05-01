@@ -53,10 +53,10 @@ class TestShellStyle(unittest.TestCase):
         self.assertEqual(pipeline.stdout(), 'yes\n')
         self.assertEqual(pipeline.re(), 0)
 
-    def test_input_stream(self):
+    def test_instream(self):
         in_str = open(self.ifconfig_out_path).read()
         self.assertEqual(
-            shell.input_stream(in_str).p('grep eth0').stdout(),
+            shell.instream(in_str).p('grep eth0').stdout(),
             'eth0      Link encap:Ethernet  HWaddr 00:30:ac:c9:2e:f4\n')
 
     def test_chain_of_pipe(self):

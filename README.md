@@ -50,8 +50,8 @@ print pipeline.stdout()
 #### Use string as command input
 
 ```python
->>> from shell import input_stream
->>> input_stream('1 2 3').p('awk "{print $1}"').stdout()
+>>> from shell import instream
+>>> instream('1 2 3').p('awk "{print $1}"').stdout()
 '1\n'
 ```
 This is equivalent to `ex('echo 1 2 3').p('awk "{print $1}"').stdout()`.

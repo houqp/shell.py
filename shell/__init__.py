@@ -2,10 +2,10 @@
 # -*- coding:utf-8 -*-
 
 __title__ = 'shell'
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = 'Qingping Hou'
 __license__ = 'MIT'
 
 from .run_cmd import RunCmd
 from .input_stream import InputStream
-from .api import input_stream, cmd, pipe_all, ex, p, ex_all
+from .api import instream, cmd, pipe_all, ex, p, ex_all

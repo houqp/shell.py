@@ -4,7 +4,7 @@ from .run_cmd import RunCmd
 from .input_stream import InputStream
 
 
-def input_stream(s):
+def instream(s):
     return InputStream(s)
 
 
