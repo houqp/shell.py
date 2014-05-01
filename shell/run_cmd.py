@@ -62,4 +62,10 @@ class RunCmd():
         self.run()
         return self.cmd_p.returncode
 
+    def __or__(self, other):
+        if isinstance(other, basestring):
+            return self.p(other)
+        elif isinstance(other, RunCmd):
+            return self.p(other.cmd_str)
+        raise ValueError('argument must be a string or an instance of RunCmd')
 

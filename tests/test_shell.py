@@ -76,6 +76,23 @@ class TestShellStyle(unittest.TestCase):
         self.assertEqual(pipeline.stdout(), '127.0.0.1\n')
         self.assertEqual(pipeline.re(), 0)
 
+    def test_chain_of_pipe_using_operator_overloading(self):
+        pipeline = shell.RunCmd('cat {0}'.format(self.ifconfig_out_path)) | \
+                   shell.RunCmd("grep -A 1 eth0") | \
+                   shell.RunCmd("grep inet") | \
+                   shell.RunCmd("awk '{print $2}'") | \
+                   shell.RunCmd("cut -d: -f 2")
+        self.assertEqual(pipeline.stdout(), '192.168.116.101\n')
+        self.assertEqual(pipeline.re(), 0)
+
+        pipeline = shell.RunCmd('cat {0}'.format(self.ifconfig_out_path)) | \
+                                "grep -A 1 lo" | \
+                                "grep inet" | \
+                                "awk '{print $2}'" | \
+                                "cut -d: -f 2"
+        self.assertEqual(pipeline.stdout(), '127.0.0.1\n')
+        self.assertEqual(pipeline.re(), 0)
+
     def test_pipe_with_cmd_list(self):
         pipeline = shell.pipe_all(['cat {0}'.format(self.ifconfig_out_path),
                                    'grep -A 1 eth0',
