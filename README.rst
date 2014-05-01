@@ -49,11 +49,11 @@ Or
 .. code-block:: python
 
     from shell import pipe_all
-    pipeline = shell.pipe_all(['ifconfig',
-                               'grep -A 1 eth0',
-                               'grep inet',
-                               'awk "{print $2}"',
-                               'cut -d: -f 2'])
+    pipeline = pipe_all(['ifconfig',
+                         'grep -A 1 eth0',
+                         'grep inet',
+                         'awk "{print $2}"',
+                         'cut -d: -f 2'])
     print pipeline.stdout()
 
 
