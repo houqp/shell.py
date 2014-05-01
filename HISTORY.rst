@@ -3,13 +3,13 @@
 Release History
 ---------------
 
-0.0.8 (2011-05-01)
+0.0.8 (2014-05-01)
 ..................
 
 * support subclass of string and list as argument for p()
 
 
-0.0.7 (2011-04-30)
+0.0.7 (2014-04-30)
 ..................
 
 * Register in Python index
