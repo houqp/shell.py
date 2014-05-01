@@ -3,6 +3,13 @@
 Release History
 ---------------
 
+0.1.0 (2014-05-01)
+..................
+
+* overload '|' operator to simulate pipe syntax in shell (qiao)
+* fix test cases for Mac (qiao)
+
+
 0.0.8 (2014-05-01)
 ..................
 

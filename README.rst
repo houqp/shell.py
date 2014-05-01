@@ -36,12 +36,12 @@ Pipe commands
 
 .. code-block:: python
 
-    from shell import p
-    pipeline = (p('ifconfig')
-                .p('grep -A 1 eth0')
-                .p('grep inet')
-                .p('awk "{print $2}"')
-                .p('cut -d: -f 2'))
+    from shell import ex
+    pipeline = (ex('ifconfig')
+                | 'grep -A 1 eth0'
+                | 'grep inet'
+                | 'awk "{print $2}"'
+                | 'cut -d: -f 2')
     print pipeline.stdout()
 
 Or
@@ -84,6 +84,6 @@ Run tests with nosetests(at least v1.3.0):
 
 .. code-block:: bash
 
-    make test
+    $ make test
 
 
