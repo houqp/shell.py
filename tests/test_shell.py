@@ -18,8 +18,8 @@ class TestShellStyle(unittest.TestCase):
         pass
 
     def test_single_run_retcode(self):
-        self.assertEquals(shell.p('echo hello shell.py').re(), 0)
-        self.assertEquals(shell.p('ls wtf#noneexist#dir#yay').re(), 2)
+        self.assertEqual(shell.p('echo hello shell.py').re(), 0)
+        self.assertNotEqual(shell.p('ls wtf#noneexist#dir#yay').re(), 0)
 
     def test_single_run_stdout(self):
         re = shell.p('echo hello shell.py').stdout()
@@ -39,8 +39,8 @@ class TestShellStyle(unittest.TestCase):
         expected_stderr = subprocess.Popen(
             ['ls', bad_path], stderr=subprocess.PIPE).communicate()[1]
         task = shell.ex('ls {0}'.format(bad_path))
-        self.assertEqual(task.re(), 2)
-        self.assertEquals(task.stderr(), expected_stderr)
+        self.assertNotEqual(task.re(), 0)
+        self.assertEqual(task.stderr(), expected_stderr)
 
     def test_simple_pipe(self):
         pipeline = shell.p('echo yes no').p("awk '{print $1}'")
