@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 __title__ = 'shell'
-__version__ = '0.0.8'
+__version__ = '0.1.0'
 __author__ = 'Qingping Hou'
 __license__ = 'MIT'
 
