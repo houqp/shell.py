@@ -11,7 +11,10 @@ class TestShellStyle(unittest.TestCase):
 
     def setUp(self):
         CURDIR = os.path.dirname(__file__)
-        self.ifconfig_out_path = os.path.join(CURDIR, 'data/ifconfig.out')
+        self.data_dir_path = os.path.join(CURDIR, 'data')
+        self.ifconfig_out_path = os.path.join(self.data_dir_path,
+                                              'ifconfig.out')
+        self.test_out_file = os.path.join(self.data_dir_path, 'test_out')
 
     def tearDown(self):
         pass
@@ -82,11 +85,11 @@ class TestShellStyle(unittest.TestCase):
         self.assertEqual(pipeline.stdout(), b'192.168.116.101\n')
         self.assertEqual(pipeline.re(), 0)
 
-        pipeline = (shell.RunCmd('cat {0}'.format(self.ifconfig_out_path)) |
-                                 "grep -A 1 lo" |
-                                 "grep inet" |
-                                 "awk '{print $2}'" |
-                                 "cut -d: -f 2")
+        pipeline = (shell.RunCmd('cat {0}'.format(self.ifconfig_out_path))
+                    | "grep -A 1 lo"
+                    | "grep inet"
+                    | "awk '{print $2}'"
+                    | "cut -d: -f 2")
         self.assertEqual(pipeline.stdout(), b'127.0.0.1\n')
         self.assertEqual(pipeline.re(), 0)
 
@@ -115,6 +118,22 @@ class TestShellStyle(unittest.TestCase):
         self.assertEqual(task.re(), 0)
         self.assertEqual(task.stdout(),
                          (os.path.expanduser('~')+'\n').encode('utf-8'))
+
+    def test_io_redirect_wr_string_arg(self):
+        shell.ex('rm -rf {0}'.format(self.test_out_file))
+        shell.ex('echo 123').wr(self.test_out_file)
+        out_content = shell.ex('cat {0}'.format(self.test_out_file)).stdout()
+        self.assertEqual(b'123\n', out_content)
+        os.remove(self.test_out_file)
+
+    def test_io_redirect_wr_file_arg(self):
+        shell.ex('rm -rf {0}'.format(self.test_out_file))
+        fd = open(self.test_out_file, 'wb')
+        shell.ex('echo 123').wr(fd)
+        fd.close()
+        out_content = shell.ex('cat {0}'.format(self.test_out_file)).stdout()
+        self.assertEqual(b'123\n', out_content)
+        os.remove(self.test_out_file)
 
 
 if __name__ == "__main__":
