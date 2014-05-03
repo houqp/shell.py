@@ -70,3 +70,15 @@ class RunCmd():
         elif isinstance(other, RunCmd):
             return self.p(other.cmd_str)
         raise ValueError('argument must be a string or an instance of RunCmd')
+
+    def wr(self, writable, source='stdout'):
+        if source != 'stdout' and source != 'stderr':
+            raise ValueError('unsupported source')
+        if isinstance(writable, basestring):
+            fd = open(writable, 'wb')
+            fd.write(getattr(self, source)())
+            fd.close()
+        elif hasattr(writable, 'write'):
+            writable.write(getattr(self, source)())
+        else:
+            raise ValueError('first argument must have a write method')
