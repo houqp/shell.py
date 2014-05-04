@@ -54,7 +54,8 @@ class TestShellStyle(unittest.TestCase):
         self.assertEqual(pipeline.re(), 0)
 
     def test_instream(self):
-        in_str = open(self.ifconfig_out_path).read()
+        with open(self.ifconfig_out_path) as ifconf_fd:
+            in_str = ifconf_fd.read()
         self.assertEqual(
             shell.instream(in_str).p('grep eth0').stdout(),
             b'eth0      Link encap:Ethernet  HWaddr 00:30:ac:c9:2e:f4\n')
@@ -151,9 +152,8 @@ class TestShellStyle(unittest.TestCase):
 
     def test_io_redirect_using_gt_operator_file_arg(self):
         shell.ex('rm -rf {0}'.format(self.test_out_file))
-        fd = open(self.test_out_file, 'wb')
-        shell.ex('echo 123') > fd
-        fd.close()
+        with open(self.test_out_file, 'wb') as fd:
+            shell.ex('echo 123') > fd
         out_content = shell.ex('cat {0}'.format(self.test_out_file)).stdout()
         self.assertEqual(b'123\n', out_content)
         os.remove(self.test_out_file)
