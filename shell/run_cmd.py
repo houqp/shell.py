@@ -82,3 +82,6 @@ class RunCmd():
             writable.write(getattr(self, source)())
         else:
             raise ValueError('first argument must have a write method')
+
+    def __gt__(self, other):
+        self.wr(other)
