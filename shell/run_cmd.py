@@ -79,9 +79,11 @@ class RunCmd():
             fd.write(getattr(self, source)())
             fd.close()
         elif hasattr(writable, 'write'):
+            writable.truncate(0)
             writable.write(getattr(self, source)())
         else:
-            raise ValueError('first argument must have a write method')
+            raise ValueError('first argument must be a string'
+                             'or has (write, truncate) method')
 
     def __gt__(self, other):
         self.wr(other)

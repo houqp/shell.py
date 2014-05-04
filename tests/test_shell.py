@@ -121,18 +121,25 @@ class TestShellStyle(unittest.TestCase):
 
     def test_io_redirect_wr_string_arg(self):
         shell.ex('rm -rf {0}'.format(self.test_out_file))
-        shell.ex('echo 123').wr(self.test_out_file)
+        shell.ex('echo 123456').wr(self.test_out_file)
         out_content = shell.ex('cat {0}'.format(self.test_out_file)).stdout()
-        self.assertEqual(b'123\n', out_content)
+        self.assertEqual(b'123456\n', out_content)
+        shell.ex('echo 1').wr(self.test_out_file)
+        out_content = shell.ex('cat {0}'.format(self.test_out_file)).stdout()
+        self.assertEqual(b'1\n', out_content)
         os.remove(self.test_out_file)
 
     def test_io_redirect_wr_file_arg(self):
         shell.ex('rm -rf {0}'.format(self.test_out_file))
-        fd = open(self.test_out_file, 'wb')
-        shell.ex('echo 123').wr(fd)
-        fd.close()
+        with open(self.test_out_file, 'ab') as fd:
+            shell.ex('echo 123').wr(fd)
         out_content = shell.ex('cat {0}'.format(self.test_out_file)).stdout()
         self.assertEqual(b'123\n', out_content)
+
+        with open(self.test_out_file, 'ab') as fd:
+            shell.ex('echo 1').wr(fd)
+        out_content = shell.ex('cat {0}'.format(self.test_out_file)).stdout()
+        self.assertEqual(b'1\n', out_content)
         os.remove(self.test_out_file)
 
     def test_io_redirect_using_gt_operator_string_arg(self):
