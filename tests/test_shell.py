@@ -135,6 +135,22 @@ class TestShellStyle(unittest.TestCase):
         self.assertEqual(b'123\n', out_content)
         os.remove(self.test_out_file)
 
+    def test_io_redirect_using_gt_operator_string_arg(self):
+        shell.ex('rm -rf {0}'.format(self.test_out_file))
+        shell.ex('echo 123') > self.test_out_file
+        out_content = shell.ex('cat {0}'.format(self.test_out_file)).stdout()
+        self.assertEqual(b'123\n', out_content)
+        os.remove(self.test_out_file)
+
+    def test_io_redirect_using_gt_operator_file_arg(self):
+        shell.ex('rm -rf {0}'.format(self.test_out_file))
+        fd = open(self.test_out_file, 'wb')
+        shell.ex('echo 123') > fd
+        fd.close()
+        out_content = shell.ex('cat {0}'.format(self.test_out_file)).stdout()
+        self.assertEqual(b'123\n', out_content)
+        os.remove(self.test_out_file)
+
 
 if __name__ == "__main__":
     unittest.main()
