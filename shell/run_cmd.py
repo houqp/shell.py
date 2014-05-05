@@ -85,8 +85,8 @@ class RunCmd():
             raise ValueError('first argument must be a string'
                              'or has (write, truncate) methods')
 
-    def __gt__(self, other):
-        self.wr(other)
+    def __gt__(self, target):
+        self.wr(target)
 
     def ap(self, target, source='stdout'):
         if source != 'stdout' and source != 'stderr':
@@ -101,3 +101,6 @@ class RunCmd():
         else:
             raise ValueError('first argument must be a string'
                              'or has (write, seek) methods')
+
+    def __rshift__(self, target):
+        self.ap(target)

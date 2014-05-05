@@ -180,6 +180,28 @@ class TestShellStyle(unittest.TestCase):
             b'1\n23\n')
         os.remove(self.test_out_file)
 
+    def test_io_redirect_rshift_string_arg(self):
+        shell.ex('rm -rf {0}'.format(self.test_out_file))
+        shell.ex('echo 1') >> self.test_out_file
+        self.assertEqual(
+            shell.ex('cat {0}'.format(self.test_out_file)).stdout(),
+            b'1\n')
+        shell.ex('echo 23') >> self.test_out_file
+        self.assertEqual(
+            shell.ex('cat {0}'.format(self.test_out_file)).stdout(),
+            b'1\n23\n')
+        os.remove(self.test_out_file)
+
+    def test_io_redirect_rshift_file_arg(self):
+        shell.ex('rm -rf {0}'.format(self.test_out_file))
+        shell.ex('echo 1') > self.test_out_file
+        with open(self.test_out_file, 'rb+') as fd:
+            shell.ex('echo 23') >> fd
+        self.assertEqual(
+            shell.ex('cat {0}'.format(self.test_out_file)).stdout(),
+            b'1\n23\n')
+        os.remove(self.test_out_file)
+
 
 if __name__ == "__main__":
     unittest.main()
