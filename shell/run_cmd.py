@@ -73,7 +73,7 @@ class RunCmd():
 
     def wr(self, target, source='stdout'):
         if source != 'stdout' and source != 'stderr':
-            raise ValueError('unsupported source')
+            raise ValueError('unsupported source: {0}'.format(source))
         if isinstance(target, basestring):
             fd = open(target, 'wb')
             fd.write(getattr(self, source)())
@@ -87,3 +87,17 @@ class RunCmd():
 
     def __gt__(self, other):
         self.wr(other)
+
+    def ap(self, target, source='stdout'):
+        if source != 'stdout' and source != 'stderr':
+            raise ValueError('unsupported source: {0}'.format(source))
+        if isinstance(target, basestring):
+            fd = open(target, 'ab')
+            fd.write(getattr(self, source)())
+            fd.close()
+        elif hasattr(target, 'write') and hasattr(target, 'seek'):
+            target.seek(0, 2)
+            target.write(getattr(self, source)())
+        else:
+            raise ValueError('first argument must be a string'
+                             'or has (write, seek) methods')
