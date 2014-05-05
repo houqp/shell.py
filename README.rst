@@ -37,24 +37,21 @@ Pipe commands
 .. code-block:: python
 
     from shell import ex
-    pipeline = (ex('ifconfig')
-                | 'grep -A 1 eth0'
-                | 'grep inet'
-                | 'awk "{print $2}"'
-                | 'cut -d: -f 2')
-    print pipeline.stdout()
+    re = (ex('ifconfig')
+          | 'grep -A 1 eth0'
+          | 'grep inet'
+          | 'awk "{print $2}"'
+          | 'cut -d: -f 2').stdout()
 
 Or
 
 .. code-block:: python
 
     from shell import pipe_all
-    pipeline = pipe_all(['ifconfig',
-                         'grep -A 1 eth0',
-                         'grep inet',
-                         'awk "{print $2}"',
-                         'cut -d: -f 2'])
-    print pipeline.stdout()
+    re = pipe_all(['ls -la ~',
+                   'awk "{print $9}"',
+                   'grep -E "^\."',
+                   'wc -l']).stdout()
 
 
 Use string as stdin
