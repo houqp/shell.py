@@ -57,8 +57,8 @@ Or
     print pipeline.stdout()
 
 
-Use string as command input
-...........................
+Use string as stdin
+...................
 
 .. code-block:: python
 
@@ -72,6 +72,28 @@ This is equivalent to:
 
     >>> from shell import ex
     >>> ex('echo 1 2 3').p('awk "{print $1}"').stdout()
+
+
+IO redirect
+............
+
+Overwrite a file:
+
+.. code-block:: python
+
+    >>> from shell import ex
+    >>> ex('echo yolo').wr('/tmp/out')
+    >>> ex('echo yolo') > '/tmp/out'
+
+Append to a file:
+
+.. code-block:: python
+
+    >>> from shell import ex
+    >>> ex('echo yolo').ap('/tmp/out')
+    >>> ex('echo yolo') >> '/tmp/out'
+
+
 
 
 See test cases for more examples.

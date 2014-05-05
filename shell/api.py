@@ -31,6 +31,14 @@ def p(arg):
 
 
 def ex(cmd_str):
+    """Execute a shell command.
+
+    Args:
+        cmd_str: shell command as string.
+
+    Returns:
+        A RunCmd instance.
+    """
     return RunCmd(cmd_str).run()
 
 

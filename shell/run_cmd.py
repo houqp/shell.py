@@ -71,19 +71,19 @@ class RunCmd():
             return self.p(other.cmd_str)
         raise ValueError('argument must be a string or an instance of RunCmd')
 
-    def wr(self, writable, source='stdout'):
+    def wr(self, target, source='stdout'):
         if source != 'stdout' and source != 'stderr':
             raise ValueError('unsupported source')
-        if isinstance(writable, basestring):
-            fd = open(writable, 'wb')
+        if isinstance(target, basestring):
+            fd = open(target, 'wb')
             fd.write(getattr(self, source)())
             fd.close()
-        elif hasattr(writable, 'write'):
-            writable.truncate(0)
-            writable.write(getattr(self, source)())
+        elif hasattr(target, 'write') and hasattr(target, 'truncate'):
+            target.truncate(0)
+            target.write(getattr(self, source)())
         else:
             raise ValueError('first argument must be a string'
-                             'or has (write, truncate) method')
+                             'or has (write, truncate) methods')
 
     def __gt__(self, other):
         self.wr(other)
