@@ -206,7 +206,7 @@ class TestShellStyle(unittest.TestCase):
     def test_async_ex_time(self):
         start_t = time.time()
         pe = shell.asex('sleep 2')
-        self.assertLess(start_t - time.time(), 1)
+        self.assertTrue(start_t - time.time() < 1)
 
 
 if __name__ == "__main__":

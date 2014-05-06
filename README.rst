@@ -40,7 +40,7 @@ Asynchronous execution:
     >>> c = asex('echo hello shell.py')
     >>> # do other stuffs
     ...
-    >>> c.stdout()
+    >>> c.stdout() # wait until process exit and read stdout
     'hello shell.py\n'
 
 
