@@ -3,7 +3,7 @@
 Release History
 ---------------
 
-0.3.0 (2014-05-06)
+0.3.0 (2014-05-05)
 ..................
 
 * asynchronous command execution
