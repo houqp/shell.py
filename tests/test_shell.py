@@ -20,6 +20,11 @@ class TestShellStyle(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_get_environment_var(self):
+        self.assertNotEqual(shell.env('foo'), 'bar')
+        os.environ['foo'] = 'bar'
+        self.assertEqual(shell.env('foo'), 'bar')
+
     def test_single_run_retcode(self):
         self.assertEqual(shell.p('echo hello shell.py').re(), 0)
         self.assertNotEqual(shell.p('ls wtf#noneexist#dir#yay').re(), 0)
@@ -205,7 +210,7 @@ class TestShellStyle(unittest.TestCase):
 
     def test_async_ex_time(self):
         start_t = time.time()
-        pe = shell.asex('sleep 2')
+        shell.asex('sleep 2')
         self.assertTrue(time.time() - start_t < 1)
 
     def test_parallel_ex_time(self):

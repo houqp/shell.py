@@ -1,8 +1,13 @@
 # -*- coding:utf-8 -*-
 
+import os
 from .compat import basestring
 from .run_cmd import RunCmd
 from .input_stream import InputStream
+
+
+def env(key):
+    return os.environ.get(key)
 
 
 def instream(s):
