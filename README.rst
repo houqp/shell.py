@@ -24,11 +24,25 @@ Usage
 Execute a shell command
 .......................
 
+Block until return:
+
 .. code-block:: python
 
     >>> from shell import ex
     >>> ex('echo hello shell.py').stdout()
     'hello shell.py\n'
+
+Asynchronous execution:
+
+.. code-block:: python
+
+    >>> from shell import ex
+    >>> c = asex('echo hello shell.py')
+    >>> # do other stuffs
+    ...
+    >>> c.stdout()
+    'hello shell.py\n'
+
 
 
 Pipe commands
@@ -89,8 +103,6 @@ Append to a file:
     >>> from shell import ex
     >>> ex('echo yolo').ap('/tmp/out')
     >>> ex('echo yolo') >> '/tmp/out'
-
-
 
 
 See test cases for more examples.

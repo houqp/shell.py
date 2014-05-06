@@ -23,17 +23,21 @@ class RunCmd():
     def get_cmd_lst(self):
         # handle '~'
         lst = [os.path.expanduser(c) for c in shlex.split(self.cmd_str)]
-        # @TODO handl env var  03.04 2014 (houqp)
+        # @TODO handle env var  03.04 2014 (houqp)
         return lst
 
-    def get_popen(self):
+    def init_popen(self):
         if self.cmd_p is None:
             self.cmd_p = Popen(
                 self.get_cmd_lst(),
                 stdin=self.input_pipe, stdout=PIPE, stderr=PIPE)
-        return self.cmd_p
+        return self
+
+    def get_popen(self):
+        return self.init_popen().cmd_p
 
     def p(self, cmd):
+        # @TODO check cmd
         in_pipe = None
         if self.std['out']:
             # command has already been executed, get output as string
@@ -44,7 +48,7 @@ class RunCmd():
         # cmd_p.stdout.close() # allow cmd_p to receive SIGPIPE?
         return RunCmd(cmd, input_pipe=in_pipe)
 
-    def run(self):
+    def wait(self):
         cmd_p = self.get_popen()
         if cmd_p.returncode is None:
             self.std['out'], self.std['err'] = cmd_p.communicate()
@@ -52,16 +56,16 @@ class RunCmd():
 
     def stdout(self):
         if self.std['out'] is None:
-            self.run()
+            self.wait()
         return self.std['out']
 
     def stderr(self):
         if self.std['err'] is None:
-            self.run()
+            self.wait()
         return self.std['err']
 
     def re(self):
-        self.run()
+        self.wait()
         return self.cmd_p.returncode
 
     def __or__(self, other):

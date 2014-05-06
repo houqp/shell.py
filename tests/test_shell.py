@@ -5,6 +5,7 @@ import os
 import unittest
 import subprocess
 import shell
+import time
 
 
 class TestShellStyle(unittest.TestCase):
@@ -49,7 +50,7 @@ class TestShellStyle(unittest.TestCase):
 
     def test_simple_pipe_run(self):
         pipeline = shell.p('echo yes no').p("awk '{print $1}'")
-        pipeline.run()
+        pipeline.wait()
         self.assertEqual(pipeline.stdout(), b'yes\n')
         self.assertEqual(pipeline.re(), 0)
 
@@ -201,6 +202,11 @@ class TestShellStyle(unittest.TestCase):
             shell.ex('cat {0}'.format(self.test_out_file)).stdout(),
             b'1\n23\n')
         os.remove(self.test_out_file)
+
+    def test_async_ex_time(self):
+        start_t = time.time()
+        pe = shell.asex('sleep 2')
+        self.assertLess(start_t - time.time(), 1)
 
 
 if __name__ == "__main__":
