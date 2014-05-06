@@ -7,6 +7,7 @@ Release History
 ..................
 
 * asynchronous command execution
+* parallel command execution
 
 
 0.2.0 (2014-05-04)

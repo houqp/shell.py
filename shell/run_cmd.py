@@ -54,6 +54,13 @@ class RunCmd():
             self.std['out'], self.std['err'] = cmd_p.communicate()
         return self
 
+    def poll(self):
+        """
+        return None if not terminated, otherwise return return code
+        """
+        cmd_p = self.get_popen()
+        return cmd_p.poll()
+
     def stdout(self):
         if self.std['out'] is None:
             self.wait()

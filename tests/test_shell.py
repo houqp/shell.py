@@ -206,7 +206,50 @@ class TestShellStyle(unittest.TestCase):
     def test_async_ex_time(self):
         start_t = time.time()
         pe = shell.asex('sleep 2')
-        self.assertTrue(start_t - time.time() < 1)
+        self.assertTrue(time.time() - start_t < 1)
+
+    def test_parallel_ex_time(self):
+        start_t = time.time()
+        shell.parallel.ex_all([
+            'sleep 0.2',
+            'sleep 0.2',
+            'sleep 0.2'])
+        diff_t = time.time() - start_t
+        self.assertTrue(diff_t > 0.2)
+        self.assertTrue(diff_t < 0.3)
+
+    def test_parallel_ex_result(self):
+        pe = shell.parallel.ex_all([
+            'echo h',
+            'echo e',
+            'echo l',
+            'echo l',
+            'echo o',
+            'echo !'])
+        self.assertEqual(''.join([c.stdout().decode('utf-8').strip('\n')
+                                  for c in pe.cmds()]),
+                         'hello!')
+
+    def test_parallel_asex_time(self):
+        start_t = time.time()
+        shell.parallel.asex_all([
+            'sleep 0.2',
+            'sleep 0.2',
+            'sleep 0.2'])
+        diff_t = time.time() - start_t
+        self.assertTrue(diff_t < 0.2)
+
+    def test_parallel_asex_result(self):
+        pe = shell.parallel.asex_all([
+            'printf h',
+            'printf e',
+            'printf l',
+            'printf l',
+            'printf o',
+            'printf !'])
+        pe.wait()
+        self.assertEqual(b''.join([c.stdout() for c in pe.cmds()]),
+                         b'hello!')
 
 
 if __name__ == "__main__":

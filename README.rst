@@ -38,7 +38,7 @@ Asynchronous execution:
 
     >>> from shell import ex
     >>> c = asex('echo hello shell.py')
-    >>> # do other stuffs
+    >>> # do something else
     ...
     >>> c.stdout() # wait until process exit and read stdout
     'hello shell.py\n'
@@ -103,6 +103,27 @@ Append to a file:
     >>> from shell import ex
     >>> ex('echo yolo').ap('/tmp/out')
     >>> ex('echo yolo') >> '/tmp/out'
+
+
+Run commands in parallel
+........................
+
+Block until all commands return:
+
+.. code-block:: python
+
+    >>> from shell import parallel as par
+    >>> par.ex_all(['sleep 2', 'sleep 2']) # return in 2s
+
+Asynchronous parallel execution:
+
+.. code-block:: python
+
+    >>> from shell import parallel as par
+    >>> pe = par.asex_all(['sleep 2', 'sleep 2']) # return immediately
+    >>> # do something else
+    ...
+    >>> pe.wait()
 
 
 See test cases for more examples.
