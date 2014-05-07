@@ -11,3 +11,7 @@ def str_to_pipe(s):
     input_pipe.write(s)
     input_pipe.seek(0)
     return input_pipe
+
+
+def check_attrs(obj, attr_lst):
+    return all([hasattr(obj, attr) for attr in attr_lst])

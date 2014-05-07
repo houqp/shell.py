@@ -7,7 +7,7 @@ from subprocess import Popen
 from subprocess import PIPE
 
 from .compat import basestring
-from .util import str_to_pipe
+from .util import str_to_pipe, check_attrs
 
 
 class RunCmd():
@@ -89,8 +89,9 @@ class RunCmd():
             fd = open(target, 'wb')
             fd.write(getattr(self, source)())
             fd.close()
-        elif hasattr(target, 'write') and hasattr(target, 'truncate'):
+        elif check_attrs(target, ['write', 'truncate', 'seek']):
             target.truncate(0)
+            target.seek(0)  # work around bug in pypy<2.3.0-alpha0
             target.write(getattr(self, source)())
         else:
             raise ValueError('first argument must be a string'
@@ -106,7 +107,7 @@ class RunCmd():
             fd = open(target, 'ab')
             fd.write(getattr(self, source)())
             fd.close()
-        elif hasattr(target, 'write') and hasattr(target, 'seek'):
+        elif check_attrs(target, ['write', 'seek']):
             target.seek(0, 2)
             target.write(getattr(self, source)())
         else:

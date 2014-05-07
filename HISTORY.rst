@@ -7,6 +7,7 @@ Release History
 ..................
 
 * add env api
+* add pypy support
 
 
 0.3.0 (2014-05-05)
