@@ -3,19 +3,13 @@
 
 import tempfile
 
-from .compat import is_py3
+from .compat import is_py2, is_py3
 
 
 def str_to_pipe(s):
     input_pipe = tempfile.SpooledTemporaryFile()
-    try:
-        # py2
-        if isinstance(s, unicode):
-            s = s.encode('utf-8')
-    except NameError:
-        # py3
-        if isinstance(s, str):
-            s = s.encode('utf-8')
+    if (is_py2 and isinstance(s, unicode)) or (is_py3 and isinstance(s, str)):
+        s = s.encode('utf-8')
     input_pipe.write(s)
     input_pipe.seek(0)
     return input_pipe
