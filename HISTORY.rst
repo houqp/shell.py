@@ -8,7 +8,7 @@ Release History
 
 * add env api
 * add pypy support
-* fix: support 'utf-8' encoded string as pip input
+* fix: support 'utf-8' encoded string as pipe input
 
 
 0.3.0 (2014-05-05)
