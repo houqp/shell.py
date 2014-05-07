@@ -3,11 +3,12 @@
 Release History
 ---------------
 
-0.4.0 (2014-MM-DD)
+0.4.0 (2014-05-07)
 ..................
 
 * add env api
 * add pypy support
+* fix: support 'utf-8' encoded string as pip input
 
 
 0.3.0 (2014-05-05)

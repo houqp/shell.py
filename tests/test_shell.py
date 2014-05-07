@@ -20,6 +20,12 @@ class TestShellStyle(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_unicode_str_to_pipe(self):
+        ustr = shell.util.u('你好')
+        p = shell.util.str_to_pipe(ustr)
+        self.assertEqual(p.read().decode('utf-8'), ustr)
+        p.close()
+
     def test_get_environment_var(self):
         self.assertNotEqual(shell.env('foo'), 'bar')
         os.environ['foo'] = 'bar'
