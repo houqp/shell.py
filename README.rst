@@ -51,21 +51,21 @@ Pipe commands
 .. code-block:: python
 
     from shell import ex
-    re = (ex('ifconfig')
-          | 'grep -A 1 eth0'
-          | 'grep inet'
-          | 'awk "{print $2}"'
-          | 'cut -d: -f 2').stdout()
+    re = (ex("ifconfig")
+          | "grep -A 1 eth0"
+          | "grep inet"
+          | "awk '{print $2}'"
+          | "cut -d: -f 2").stdout()
 
 Or
 
 .. code-block:: python
 
     from shell import pipe_all
-    re = pipe_all(['ls -la ~',
-                   'awk "{print $9}"',
-                   'grep -E "^\."',
-                   'wc -l']).stdout()
+    pipe_all(["ls -la ~",
+              "awk '{print $9}'",
+              "grep -E '^\.'",
+              "wc -l"]).stdout()
 
 
 Use string as stdin
@@ -74,7 +74,7 @@ Use string as stdin
 .. code-block:: python
 
     >>> from shell import instream
-    >>> instream('1 2 3').p('awk "{print $1}"').stdout()
+    >>> instream("1 2 3").p("awk '{print $1}'").stdout()
     '1\n'
 
 This is equivalent to:
@@ -82,7 +82,7 @@ This is equivalent to:
 .. code-block:: python
 
     >>> from shell import ex
-    >>> ex('echo 1 2 3').p('awk "{print $1}"').stdout()
+    >>> ex("echo 1 2 3").p("awk '{print $1}'").stdout()
 
 
 IO redirect

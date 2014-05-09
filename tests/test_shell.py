@@ -110,14 +110,14 @@ class TestShellStyle(unittest.TestCase):
         pipeline = shell.pipe_all(['cat {0}'.format(self.ifconfig_out_path),
                                    'grep -A 1 eth0',
                                    'grep inet',
-                                   'awk "{print $2}"',
+                                   'awk \'{print $2}\'',
                                    'cut -d: -f 2'])
         self.assertEqual(pipeline.stdout(), b'192.168.116.101\n')
         self.assertEqual(pipeline.re(), 0)
         pipeline = shell.p(['cat {0}'.format(self.ifconfig_out_path),
                             'grep -A 1 eth0',
                             'grep inet',
-                            'awk "{print $2}"',
+                            'awk \'{print $2}\'',
                             'cut -d: -f 2'])
         self.assertEqual(pipeline.stdout(), b'192.168.116.101\n')
         self.assertEqual(pipeline.re(), 0)
