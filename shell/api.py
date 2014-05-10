@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import os
+from contextlib import contextmanager
 from .compat import basestring
 from .run_cmd import RunCmd
 from .input_stream import InputStream
@@ -49,3 +50,19 @@ def p(arg):
         return pipe_all(arg)
     else:
         raise ValueError('argument must be a string or list')
+
+#could use ContextDecorator (built in python 3.2, pypi for python 2)
+#to allow this context manager to work as a decorator as well
+@contextmanager
+def cwd(new_dir):
+    """Used with with, temporarily change the current working directory
+    Raises:
+        OSError: error changing directory
+    """
+    saved_cwd = os.getcwd()
+    #handle path beginning with ~
+    os.chdir(os.path.expanduser(new_dir))
+    try:
+        yield saved_cwd
+    finally:
+        os.chdir(saved_cwd)

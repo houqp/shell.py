@@ -262,6 +262,18 @@ class TestShellStyle(unittest.TestCase):
         self.assertEqual(b''.join([c.stdout() for c in pe.cmds()]),
                          b'hello!')
 
+    def test_cwd_wrong_arg(self):
+        with self.assertRaises(OSError):
+            with shell.cwd('does not exist be9adc02'):
+                pass
+
+    def test_cwd(self):
+        old_cwd_expected = os.getcwd()
+        with shell.cwd(self.data_dir_path) as old_path:
+            self.assertTrue(os.path.isfile(self.ifconfig_out_path));
+            self.assertEquals(old_path, old_cwd_expected)
+        self.assertEquals(os.getcwd(), old_cwd_expected)
+
 
 if __name__ == "__main__":
     unittest.main()

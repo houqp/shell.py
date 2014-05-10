@@ -129,6 +129,26 @@ Asynchronous parallel execution:
 See test cases for more examples.
 
 
+Set working directory
+.....................
+
+Set the directory in which the commands are executed:
+
+.. code-block:: python
+
+    >>> with shell.cwd('~/server/data/upload/') as old_path:
+    >>>     shell.ex('find ./images -name "*.png"') | minify ./public |  >> 'upload.log'
+    >>> 
+
+This is equivalent to:
+
+.. code-block:: python
+
+    >>> with shell.cwd('~/server/data/upload/') as old_path:
+    >>>     shell.ex('find ~/server/data/upload/images -name "*.png"') | minify ~/server/data/upload/public |  >> '~/server/data/upload.log'
+    >>> 
+
+
 Tests
 -----
 
