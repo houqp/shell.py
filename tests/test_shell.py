@@ -12,9 +12,10 @@ class TestShellStyle(unittest.TestCase):
 
     def setUp(self):
         CURDIR = os.path.dirname(__file__)
+        self.ifconfig_out_name = 'ifconfig.out'
         self.data_dir_path = os.path.join(CURDIR, 'data')
         self.ifconfig_out_path = os.path.join(self.data_dir_path,
-                                              'ifconfig.out')
+                                              self.ifconfig_out_name)
         self.test_out_file = os.path.join(self.data_dir_path, 'test_out')
 
     def tearDown(self):
@@ -270,7 +271,7 @@ class TestShellStyle(unittest.TestCase):
     def test_cwd(self):
         old_cwd_expected = os.getcwd()
         with shell.cwd(self.data_dir_path) as old_path:
-            self.assertTrue(os.path.isfile(self.ifconfig_out_path));
+            self.assertTrue(os.path.isfile(self.ifconfig_out_name));
             self.assertEquals(old_path, old_cwd_expected)
         self.assertEquals(os.getcwd(), old_cwd_expected)
 
