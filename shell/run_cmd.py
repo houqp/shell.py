@@ -10,6 +10,18 @@ from .compat import basestring
 from .util import str_to_pipe, check_attrs
 
 
+def parse_shell_token(t):
+    if t[0] == "'" and t[-1] == "'":
+        return t[1:-1]
+    elif t[0] == '"' and t[-1] == '"':
+        t = t[1:-1]
+    # handle '~'
+    t = os.path.expanduser(t)
+    # handle env var
+    t = os.path.expandvars(t)
+    return t
+
+
 class RunCmd():
     def __init__(self, cmd_str, input_pipe=None):
         self.cmd_str = cmd_str
@@ -21,10 +33,8 @@ class RunCmd():
         self.std = {'out': None, 'err': None}
 
     def get_cmd_lst(self):
-        # handle '~'
-        lst = [os.path.expanduser(c) for c in shlex.split(self.cmd_str)]
-        # @TODO handle env var  03.04 2014 (houqp)
-        return lst
+        return [parse_shell_token(t)
+                for t in shlex.split(self.cmd_str, posix=False)]
 
     def init_popen(self):
         if self.cmd_p is None:

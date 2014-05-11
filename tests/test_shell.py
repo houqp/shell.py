@@ -21,6 +21,9 @@ class TestShellStyle(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_quote_string(self):
+        self.assertEqual(shell.ex('echo "8888"').stdout(), b"8888\n")
+
     def test_unicode_str_to_pipe(self):
         ustr = shell.util.u('你好')
         p = shell.util.str_to_pipe(ustr)
@@ -39,6 +42,11 @@ class TestShellStyle(unittest.TestCase):
     def test_single_run_stdout(self):
         re = shell.p('echo hello shell.py').stdout()
         self.assertEqual(re, b'hello shell.py\n')
+
+    def test_expand_environment_var(self):
+        self.assertNotEqual(shell.env('foo'), 'barbar')
+        os.environ['foo'] = 'barbar'
+        self.assertEqual(shell.ex('echo $foo').stdout(), b'barbar\n')
 
     def test_multiple_ex(self):
         re = shell.ex_all([

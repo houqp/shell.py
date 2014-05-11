@@ -1,4 +1,6 @@
+bug:
+	* check single quote literal strings
+
 feature:
-	* var expand
-	* parallel pipe
+	* expand $1 $2 ...
 
