@@ -7,6 +7,7 @@ Release History
 ..................
 
 * expand environment variables
+* set working directory using with statement (tburette)
 
 
 0.4.0 (2014-05-07)
