@@ -8,5 +8,5 @@ __license__ = 'MIT'
 
 from .run_cmd import RunCmd
 from .input_stream import InputStream
-from .api import env, instream, ex, ex_all, asex, pipe_all, p
+from .api import env, instream, ex, ex_all, asex, pipe_all, p, cwd
 from . import parallel_api as parallel

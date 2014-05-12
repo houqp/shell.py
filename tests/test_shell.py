@@ -12,9 +12,10 @@ class TestShellStyle(unittest.TestCase):
 
     def setUp(self):
         CURDIR = os.path.dirname(__file__)
+        self.ifconfig_out_name = 'ifconfig.out'
         self.data_dir_path = os.path.join(CURDIR, 'data')
         self.ifconfig_out_path = os.path.join(self.data_dir_path,
-                                              'ifconfig.out')
+                                              self.ifconfig_out_name)
         self.test_out_file = os.path.join(self.data_dir_path, 'test_out')
 
     def tearDown(self):
@@ -269,6 +270,18 @@ class TestShellStyle(unittest.TestCase):
         pe.wait()
         self.assertEqual(b''.join([c.stdout() for c in pe.cmds()]),
                          b'hello!')
+
+    def test_cwd_wrong_arg(self):
+        with self.assertRaises(OSError):
+            with shell.cwd('does not exist be9adc02'):
+                pass
+
+    def test_cwd(self):
+        old_cwd_expected = os.getcwd()
+        with shell.cwd(self.data_dir_path) as old_path:
+            self.assertTrue(os.path.isfile(self.ifconfig_out_name));
+            self.assertEquals(old_path, old_cwd_expected)
+        self.assertEquals(os.getcwd(), old_cwd_expected)
 
 
 if __name__ == "__main__":
