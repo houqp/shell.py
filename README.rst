@@ -143,7 +143,6 @@ This is equivalent to:
 .. code-block:: python
 
     >>> shell.ex('find ~/server/data/upload/images -name "*.png"') | 'minify ~/server/data/upload/public' |  >> '~/server/data/upload.log'
-    >>>
 
 
 See test cases for more examples.

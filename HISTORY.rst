@@ -3,7 +3,7 @@
 Release History
 ---------------
 
-0.5.0 (2014-05-DD)
+0.5.0 (2014-05-11)
 ..................
 
 * expand environment variables
