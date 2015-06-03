@@ -6,9 +6,8 @@ import shlex
 from subprocess import Popen
 from subprocess import PIPE
 
-from .compat import basestring
+from .compat import basestring, is_py3
 from .util import str_to_pipe, check_attrs
-
 
 def parse_shell_token(t):
     if t[0] == "'" and t[-1] == "'":
@@ -95,14 +94,19 @@ class RunCmd():
     def wr(self, target, source='stdout'):
         if source != 'stdout' and source != 'stderr':
             raise ValueError('unsupported source: {0}'.format(source))
+
+        out = getattr(self, source)()
+
         if isinstance(target, basestring):
             fd = open(target, 'wb')
-            fd.write(getattr(self, source)())
+            fd.write(out)
             fd.close()
         elif check_attrs(target, ['write', 'truncate', 'seek']):
             target.truncate(0)
             target.seek(0)  # work around bug in pypy<2.3.0-alpha0
-            target.write(getattr(self, source)())
+            if is_py3:
+                out = out.decode(getattr(self.cmd_p, source).encoding)
+            target.write(out)
         else:
             raise ValueError('first argument must be a string'
                              'or has (write, truncate) methods')
@@ -113,13 +117,18 @@ class RunCmd():
     def ap(self, target, source='stdout'):
         if source != 'stdout' and source != 'stderr':
             raise ValueError('unsupported source: {0}'.format(source))
+
+        out = getattr(self, source)()
+
         if isinstance(target, basestring):
             fd = open(target, 'ab')
             fd.write(getattr(self, source)())
             fd.close()
         elif check_attrs(target, ['write', 'seek']):
             target.seek(0, 2)
-            target.write(getattr(self, source)())
+            if is_py3:
+                out = out.decode(getattr(self.cmd_p, source).encoding)
+            target.write(out)
         else:
             raise ValueError('first argument must be a string'
                              'or has (write, seek) methods')
