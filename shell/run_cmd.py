@@ -110,7 +110,8 @@ class RunCmd():
             target.write(out.decode(encoding))
         elif check_attrs(target, ['write', 'truncate', 'seek']):
             target.truncate(0)
-            target.seek(0)  # work around bug in pypy<2.3.0-alpha0
+            if target.seekable():
+                target.seek(0)  # work around bug in pypy<2.3.0-alpha0
             target.write(out)
         else:
             raise ValueError('first argument must be a string'
@@ -134,7 +135,8 @@ class RunCmd():
                 else locale.getpreferredencoding(False)
             target.write(out.decode(encoding))
         elif check_attrs(target, ['write', 'seek']):
-            target.seek(0, 2)
+            if target.seekable():
+                target.seek(0, 2)
             target.write(out)
         else:
             raise ValueError('first argument must be a string'
