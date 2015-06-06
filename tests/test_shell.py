@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+import io
 import os
 import unittest
 import subprocess
@@ -164,6 +165,13 @@ class TestShellStyle(unittest.TestCase):
         self.assertEqual(b'1\n', out_content)
         os.remove(self.test_out_file)
 
+    def test_io_redirect_wr_textio_arg(self):
+        buffer = io.StringIO()
+        shell.ex('echo 123').wr(buffer)
+        buffer.seek(0)
+        out_content = buffer.read()
+        self.assertEqual('123\n', out_content)
+
     def test_io_redirect_using_gt_operator_string_arg(self):
         shell.ex('rm -rf {0}'.format(self.test_out_file))
         shell.ex('echo 123') > self.test_out_file
@@ -178,6 +186,13 @@ class TestShellStyle(unittest.TestCase):
         out_content = shell.ex('cat {0}'.format(self.test_out_file)).stdout()
         self.assertEqual(b'123\n', out_content)
         os.remove(self.test_out_file)
+
+    def test_io_redirect_using_gt_operator_textio_arg(self):
+        buffer = io.StringIO()
+        shell.ex('echo 123').wr(buffer)
+        buffer.seek(0)
+        out_content = buffer.read()
+        self.assertEqual('123\n', out_content)
 
     def test_io_redirect_ap_string_arg(self):
         shell.ex('rm -rf {0}'.format(self.test_out_file))
@@ -201,6 +216,14 @@ class TestShellStyle(unittest.TestCase):
             b'1\n23\n')
         os.remove(self.test_out_file)
 
+    def test_io_redirect_ap_textio_arg(self):
+        buffer = io.StringIO()
+        shell.ex('echo 1') > buffer
+        shell.ex('echo 123').ap(buffer)
+        buffer.seek(0)
+        out_content = buffer.read()
+        self.assertEqual('1\n123\n', out_content)
+
     def test_io_redirect_rshift_string_arg(self):
         shell.ex('rm -rf {0}'.format(self.test_out_file))
         shell.ex('echo 1') >> self.test_out_file
@@ -222,6 +245,14 @@ class TestShellStyle(unittest.TestCase):
             shell.ex('cat {0}'.format(self.test_out_file)).stdout(),
             b'1\n23\n')
         os.remove(self.test_out_file)
+
+    def test_io_redirect_rshift_textio_arg(self):
+        buffer = io.StringIO()
+        shell.ex('echo 1') > buffer
+        shell.ex('echo 123').ap(buffer)
+        buffer.seek(0)
+        out_content = buffer.read()
+        self.assertEqual('1\n123\n', out_content)
 
     def test_async_ex_time(self):
         start_t = time.time()
