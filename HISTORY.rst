@@ -3,6 +3,12 @@
 Release History
 ---------------
 
+0.5.1 (2014-06-06)
+..................
+
+* fix target decoding error for ap() and wr() in py3
+
+
 0.5.0 (2014-05-11)
 ..................
 
