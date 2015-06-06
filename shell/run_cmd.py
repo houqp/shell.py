@@ -110,7 +110,7 @@ class RunCmd():
             target.write(out.decode(encoding))
         elif check_attrs(target, ['write', 'truncate', 'seek']):
             target.truncate(0)
-            if target.seekable():
+            if hasattr(target, 'seekable') and target.seekable():
                 target.seek(0)  # work around bug in pypy<2.3.0-alpha0
             target.write(out)
         else:
@@ -135,7 +135,7 @@ class RunCmd():
                 else locale.getpreferredencoding(False)
             target.write(out.decode(encoding))
         elif check_attrs(target, ['write', 'seek']):
-            if target.seekable():
+            if hasattr(target, 'seekable') and target.seekable():
                 target.seek(0, 2)
             target.write(out)
         else:
