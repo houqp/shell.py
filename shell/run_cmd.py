@@ -105,8 +105,9 @@ class RunCmd():
             fd.close()
         elif isinstance(target, io.TextIOBase):
             target.truncate(0)
-            out = out.decode(locale.getpreferredencoding(False))
-            target.write(out)
+            encoding = target.encoding if target.encoding is not None \
+                else locale.getpreferredencoding(False)
+            target.write(out.decode(encoding))
         elif check_attrs(target, ['write', 'truncate', 'seek']):
             target.truncate(0)
             target.seek(0)  # work around bug in pypy<2.3.0-alpha0
@@ -129,8 +130,9 @@ class RunCmd():
             fd.write(out)
             fd.close()
         elif isinstance(target, io.TextIOBase):
-            out = out.decode(locale.getpreferredencoding(False))
-            target.write(out)
+            encoding = target.encoding if target.encoding is not None \
+                else locale.getpreferredencoding(False)
+            target.write(out.decode(encoding))
         elif check_attrs(target, ['write', 'seek']):
             target.seek(0, 2)
             target.write(out)
