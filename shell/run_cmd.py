@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import locale
+import io
 import os
 import shlex
 from subprocess import Popen
@@ -102,11 +103,13 @@ class RunCmd():
             fd = open(target, 'wb')
             fd.write(out)
             fd.close()
+        elif isinstance(target, io.TextIOBase):
+            target.truncate(0)
+            out = out.decode(locale.getpreferredencoding(False))
+            target.write(out)
         elif check_attrs(target, ['write', 'truncate', 'seek']):
             target.truncate(0)
             target.seek(0)  # work around bug in pypy<2.3.0-alpha0
-            if is_py3:
-                out = out.decode(locale.getpreferredencoding(False))
             target.write(out)
         else:
             raise ValueError('first argument must be a string'
@@ -123,12 +126,13 @@ class RunCmd():
 
         if isinstance(target, basestring):
             fd = open(target, 'ab')
-            fd.write(getattr(self, source)())
+            fd.write(out)
             fd.close()
+        elif isinstance(target, io.TextIOBase):
+            out = out.decode(locale.getpreferredencoding(False))
+            target.write(out)
         elif check_attrs(target, ['write', 'seek']):
             target.seek(0, 2)
-            if is_py3:
-                out = out.decode(locale.getpreferredencoding(False))
             target.write(out)
         else:
             raise ValueError('first argument must be a string'
