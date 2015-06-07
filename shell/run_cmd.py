@@ -110,11 +110,12 @@ class RunCmd():
             target.write(out.decode(encoding))
         elif check_attrs(target, ['write', 'truncate', 'seek']):
             target.truncate(0)
-            if hasattr(target, 'seekable') and target.seekable():
-                target.seek(0)  # work around bug in pypy<2.3.0-alpha0
+            if not hasattr(target, 'seekable') or \
+               (hasattr(target, 'seekable') and target.seekable()):
+                target.seek(0, os.SEEK_SET)  # work around bug in pypy<2.3.0-alpha0
             target.write(out)
         else:
-            raise ValueError('first argument must be a string'
+            raise ValueError('first argument must be a string '
                              'or has (write, truncate) methods')
 
     def __gt__(self, target):
@@ -135,11 +136,12 @@ class RunCmd():
                 else locale.getpreferredencoding(False)
             target.write(out.decode(encoding))
         elif check_attrs(target, ['write', 'seek']):
-            if hasattr(target, 'seekable') and target.seekable():
-                target.seek(0, 2)
+            if not hasattr(target, 'seekable') or \
+               (hasattr(target, 'seekable') and target.seekable()):
+                target.seek(0, os.SEEK_END)
             target.write(out)
         else:
-            raise ValueError('first argument must be a string'
+            raise ValueError('first argument must be a string '
                              'or has (write, seek) methods')
 
     def __rshift__(self, target):
