@@ -8,8 +8,16 @@ import shlex
 from subprocess import Popen
 from subprocess import PIPE
 
-from .compat import basestring, is_py3
+from .compat import basestring
 from .util import str_to_pipe, check_attrs
+
+
+def is_seekable(target):
+    # assume if it doesn't have seekable() method, .e.g a file object, then its
+    # seekable
+    return ((not hasattr(target, 'seekable') and hasattr(target, 'seek')) or
+            (hasattr(target, 'seekable') and target.seekable()))
+
 
 def parse_shell_token(t):
     if t[0] == "'" and t[-1] == "'":
@@ -110,9 +118,8 @@ class RunCmd():
             target.write(out.decode(encoding))
         elif check_attrs(target, ['write', 'truncate', 'seek']):
             target.truncate(0)
-            if not hasattr(target, 'seekable') or \
-               (hasattr(target, 'seekable') and target.seekable()):
-                target.seek(0, os.SEEK_SET)  # work around bug in pypy<2.3.0-alpha0
+            if is_seekable(target):  # work around bug in pypy<2.3.0-alpha0
+                target.seek(0, os.SEEK_SET)
             target.write(out)
         else:
             raise ValueError('first argument must be a string '
@@ -136,8 +143,7 @@ class RunCmd():
                 else locale.getpreferredencoding(False)
             target.write(out.decode(encoding))
         elif check_attrs(target, ['write', 'seek']):
-            if not hasattr(target, 'seekable') or \
-               (hasattr(target, 'seekable') and target.seekable()):
+            if is_seekable(target):  # work around bug in pypy<2.3.0-alpha0
                 target.seek(0, os.SEEK_END)
             target.write(out)
         else:

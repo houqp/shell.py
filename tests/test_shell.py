@@ -310,9 +310,17 @@ class TestShellStyle(unittest.TestCase):
     def test_cwd(self):
         old_cwd_expected = os.getcwd()
         with shell.cwd(self.data_dir_path) as old_path:
-            self.assertTrue(os.path.isfile(self.ifconfig_out_name));
+            self.assertTrue(os.path.isfile(self.ifconfig_out_name))
             self.assertEquals(old_path, old_cwd_expected)
         self.assertEquals(os.getcwd(), old_cwd_expected)
+
+    def test_target_seekable(self):
+        from shell.run_cmd import is_seekable
+        import StringIO
+        assert is_seekable(1) is False
+        assert is_seekable('') is False
+        assert is_seekable(None) is False
+        assert is_seekable(StringIO.StringIO()) is True
 
 
 if __name__ == "__main__":
