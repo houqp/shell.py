@@ -3,10 +3,16 @@
 Release History
 ---------------
 
+0.5.1 (2014-06-08)
+..................
+
+* fix seekability detection bug in pypy<2.3.0-alpha0 for wr(), ap(). (brettatoms)
+
+
 0.5.1 (2014-06-06)
 ..................
 
-* fix target decoding error for ap() and wr() in py3
+* fix target decoding error for ap() and wr() in py3. (brettatoms)
 
 
 0.5.0 (2014-05-11)
