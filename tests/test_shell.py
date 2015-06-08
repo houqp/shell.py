@@ -316,11 +316,14 @@ class TestShellStyle(unittest.TestCase):
 
     def test_target_seekable(self):
         from shell.run_cmd import is_seekable
-        import StringIO
+        try:
+            from StringIO import StringIO
+        except ImportError:
+            from io import StringIO
         assert is_seekable(1) is False
         assert is_seekable('') is False
         assert is_seekable(None) is False
-        assert is_seekable(StringIO.StringIO()) is True
+        assert is_seekable(StringIO()) is True
 
 
 if __name__ == "__main__":
