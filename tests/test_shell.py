@@ -303,9 +303,10 @@ class TestShellStyle(unittest.TestCase):
                          b'hello!')
 
     def test_cwd_wrong_arg(self):
-        with self.assertRaises(OSError):
+        def cwd_wrong_arg():
             with shell.cwd('does not exist be9adc02'):
                 pass
+        self.assertRaises(OSError, cwd_wrong_arg)
 
     def test_cwd(self):
         old_cwd_expected = os.getcwd()
