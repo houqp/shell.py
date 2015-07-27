@@ -2,8 +2,13 @@
 
 Release History
 ---------------
+0.5.3 (2014-06-08)
+..................
 
-0.5.1 (2014-06-08)
+* detect command execution status in a more robust way, fix ValueError caused during changed pipe commands when one of the command has no stdout and finishes earl.
+
+
+0.5.2 (2014-06-08)
 ..................
 
 * fix seekability detection bug in pypy<2.3.0-alpha0 for wr(), ap(). (brettatoms)
