@@ -325,6 +325,9 @@ class TestShellStyle(unittest.TestCase):
         assert is_seekable(None) is False
         assert is_seekable(StringIO()) is True
 
+    def test_no_stdout_pipe(self):
+        shell.ex('true').p('grep 1').stdout()
+
 
 if __name__ == "__main__":
     unittest.main()

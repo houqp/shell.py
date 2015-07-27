@@ -58,11 +58,11 @@ class RunCmd():
     def p(self, cmd):
         # @TODO check cmd
         in_pipe = None
-        if self.std['out']:
+        cmd_p = self.get_popen()
+        if cmd_p.stdout.closed:
             # command has already been executed, get output as string
             in_pipe = str_to_pipe(self.std['out'])
         else:
-            cmd_p = self.get_popen()
             in_pipe = cmd_p.stdout
         # cmd_p.stdout.close() # allow cmd_p to receive SIGPIPE?
         return RunCmd(cmd, input_pipe=in_pipe)
